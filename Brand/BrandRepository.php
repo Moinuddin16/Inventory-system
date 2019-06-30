@@ -1,12 +1,6 @@
 <?php
 
-    include_once '../DB.php';
-    include_once '../InvetoryResponse.php';
-    include_once 'BrandModels.php';
-    include_once 'BrandConstant.php';
-
-    
-    
+require '../vendor/autoload.php';
     class BrandRepository{
         
         public $DB;
@@ -30,25 +24,28 @@
                 }
                 return new InvetoryResponse($brands, null);
             } else {
-                return new InventoryResponse(null, NoBrandDataFound());
+                return new InventoryResponse(null,new NoBrandDataFound());
             }
         }
         
-        public function addBrand($Name,$Website)
+        public function addBrand($Title,$Website)
         {
-            $query = "INSERT INTO brand (Name,Website) VALUES ('$Name','$Website')";
+            
+            $query = "INSERT INTO brand (Name,Website) VALUES ('$Title','$Website')";
 
             $result = $this->DB->executeQuery($query);
            
             if($result){
                 $brand = new Brand();
                 $brand->setId($this->DB->getId());
-                $brand->setTitle($this->Name);
-                $brand->setWebsite($this->Website);               
+                $brand->setTitle($Title);
+                $brand->setWebsite($Website);
+                
+                return new InvetoryResponse($brand,Null);
                 //echo "Brand is insert successfully";
             }
             else{
-                echo "Brand is not insert successfully";
+                return new InvetoryResponse(Null,new NoDataInsert());
             }
 
         }

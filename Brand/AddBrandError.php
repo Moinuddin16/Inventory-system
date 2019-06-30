@@ -1,6 +1,6 @@
 <?php
-include '../InventoryError.php';
 
+require '../vendor/autoload.php';
 class NoDataInsert extends InventoryError{
 
     function getErrorCode(){
@@ -8,7 +8,7 @@ class NoDataInsert extends InventoryError{
     }
 
     function getErrorMessage(){
-        return "No Data Insert In Repository";
+        return "No Data In Repository";
     } 
 }
 

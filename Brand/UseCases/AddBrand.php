@@ -1,60 +1,38 @@
 <?php 
 
-    include_once 'BrandController.php';
-    include_once 'BrandRepository.php';
-    include_once 'BrandModels.php';
-
+require '../vendor/autoload.php';
+    
     class Addbrand {
 
-        public $brand;
-        public $Name;
-        public $Website;
-        public $brandRepository;
-        public $validation_flag;
-
+        private $brand;
+        private $brandRepository;
 
         public function __construct(Brand $brand , BrandRepository $brandRepository)
         {
-            $this->Name = $brand->getTitle();
-            $this->Website = $brand->getWebsite();
+            $this->brand = $brand;
             $this->brandRepository = $brandRepository;
         }
 
-        public function data_validation()
-        {
-            if($this->Name != Null){
-                $this->validation_flag['Name']='ture';
-            }
-            else{
-                $this->validation_flag['Name']='false';
-            }
-            
-            if($this->Website != Null){
-                $this->validation_flag['Website']='ture';
-            }
-            else{
-                $this->validation_flag['Website']='false';
-            }
-
-            if(filter_var($this->website,FILTER_VALIDATE_URL)){
-                $this->validation_flag['Webiste_validation']='ture';
-            }
-            else{
-                $this->validation_flag['Webiste_validation']='false';
-            }
-        }
-
        public function execute() {
+           
+            $Website_varification = filter_var($this->brand->website,FILTER_VALIDATE_URL);
             
-            if($this->Website != Null && $this->Name != Null)
+            if($this->brand->title == Null || empty($this->brand->title))
             {
-                return $this->brandRepository->addBrand($this->Name,$this->Website);
+                return new InvetoryResponse(null, new EmptyOrNullValue("BrandName"));
             }
-            else
+            if($this->brand->website == Null || empty($this->brand->website))
             {
-                echo"No data found";
+                return new InvetoryResponse(null, new EmptyOrNullValue("BrandWebsite"));
+            } 
+            if($Website_varification == FALSE )
+            {
+                return new InvetoryResponse(Null,new InvalidUrl($this->brand->website));
+            }   
+            if($this->brand->website != Null && $this->brand->title != Null && $Website_varification == TRUE)
+            {
+                return $this->brandRepository->addBrand($this->brand->title,$this->brand->website);
             }
-            
         }
 
     }

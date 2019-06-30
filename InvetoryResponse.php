@@ -1,7 +1,5 @@
 <?php
-
-    include 'InventoryError.php';
-
+require 'vendor/autoload.php';
     class InvetoryResponse{
 
         public $inventoryError;

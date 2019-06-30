@@ -1,8 +1,9 @@
 <?php 
 
-    include_once 'BrandRepository.php';
-    
+require '../vendor/autoload.php';
+
     class GetBrands{
+
         public $title;
 
 

@@ -1,5 +1,5 @@
 <?php
-include '../InventoryError.php';
+require '../vendor/autoload.php';
  class NoBrandDataFound extends InventoryError {
      function getErrorCode() {
          return "NoBrandDataFound";
@@ -8,7 +8,8 @@ include '../InventoryError.php';
      function getErrorMessage() {
          return "No brand data found";
      }
-} 
+}
+ 
 
 ?>
 

@@ -1,12 +1,5 @@
 <?php
-
-    include_once ('../DB.php');
-    include_once ('BrandRepository.php');
-    include_once('UseCases/GetBrands.php');
-    include_once('../RestResponse.php');
-    include_once('UseCases/AddBrand.php');
-    
-    
+    require '../vendor/autoload.php';
     $useCase = $_GET['use_case'];
     
     $brandRepository = new BrandRepository(DB::getInstance());
@@ -35,6 +28,13 @@
 
         $addBrand = new Addbrand($brand,$brandRepository);
         $inventroyResponse = $addBrand->execute();
+        
+        if ($inventroyResponse->inventoryData != null) {
+            echo RestResponse::createSuccessResponse($inventroyResponse->inventoryData);
+        } 
+        else {
+            echo RestResponse::createErrorResponse($inventroyResponse->inventoryError);
+        }
         break;
 
         //echo $name."<br>";
